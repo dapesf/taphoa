@@ -1,0 +1,9 @@
+.todo-content label {
+    width: 70%;
+    display: block;
+    text-align: left;
+  }
+
+  .todo-content {
+    width: 70%;
+  }
