@@ -1,0 +1,130 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Monaco;}
+{\colortbl;\red255\green255\blue255;\red39\green129\blue201;\red0\green0\blue0;\red255\green255\blue255;
+\red20\green152\blue106;\red235\green16\blue47;\red255\green255\blue255;\red255\green255\blue255;\red212\green20\blue102;
+\red226\green131\blue14;}
+{\*\expandedcolortbl;;\cssrgb\c18039\c58431\c82745;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;
+\cssrgb\c0\c65098\c49020;\cssrgb\c94902\c17255\c23922;\cssrgb\c100000\c100000\c100000\c50196;\cssrgb\c100000\c100000\c100000\c60000;\cssrgb\c87451\c18824\c47451;
+\cssrgb\c91373\c58431\c4706;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 'dart:async'\cf4 \strokec4 ;\
+\cf2 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 'package:flutter/material.dart'\cf4 \strokec4 ;\
+\cf2 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 'package:barcode_scan/barcode_scan.dart'\cf4 \strokec4 ;\
+\cf2 \strokec2 import\cf4 \strokec4  \cf5 \strokec5 'package:camera/camera.dart'\cf4 \strokec4 ;\
+\
+List<CameraDescription> cameras;\
+\
+Future<\cf2 \strokec2 void\cf4 \strokec4 > \cf6 \strokec6 main\cf4 \strokec4 () async \{\
+  \cf7 \strokec7 // Kh\uc0\u7903 i t\u7841 o cameras\cf4 \strokec4 \
+  cameras = await \cf6 \strokec6 availableCameras\cf4 \strokec4 ();\
+  runApp(MyApp());\
+\}\
+\
+\cf2 \strokec2 class\cf4 \strokec4  \cf6 \strokec6 MyApp\cf4 \strokec4  \cf2 \strokec2 extends\cf4 \strokec4  \cf6 \strokec6 StatelessWidget\cf4 \strokec4  \{\
+  \cf8 \strokec8 @override\cf4 \strokec4 \
+  Widget \cf6 \strokec6 build\cf4 \strokec4 (BuildContext context) \{\
+    \cf2 \strokec2 return\cf4 \strokec4  MaterialApp(\
+      title: \cf5 \strokec5 'Qu\'e9t m\'e3 v\uc0\u7841 ch'\cf4 \strokec4 ,\
+      home: ScanScreen(),\
+    );\
+  \}\
+\}\
+\
+\cf2 \strokec2 class\cf4 \strokec4  \cf6 \strokec6 ScanScreen\cf4 \strokec4  \cf2 \strokec2 extends\cf4 \strokec4  \cf6 \strokec6 StatefulWidget\cf4 \strokec4  \{\
+  \cf8 \strokec8 @override\cf4 \strokec4 \
+  _ScanScreenState \cf6 \strokec6 createState\cf4 \strokec4 () => _ScanScreenState();\
+\}\
+\
+\cf2 \strokec2 class\cf4 \strokec4  \cf6 \strokec6 _ScanScreenState\cf4 \strokec4  \cf2 \strokec2 extends\cf4 \strokec4  \cf6 \strokec6 State\cf4 \strokec4 <ScanScreen> \{\
+  CameraController controller;\
+  \cf9 \strokec9 bool\cf4 \strokec4  \cf9 \strokec9 _isInitialized\cf4 \strokec4  = \cf2 \strokec2 false\cf4 \strokec4 ;\
+  String _result;\
+\
+  \cf8 \strokec8 @override\cf4 \strokec4 \
+  \cf2 \strokec2 void\cf4 \strokec4  \cf6 \strokec6 initState\cf4 \strokec4 () \{\
+    \cf10 \strokec10 super\cf4 \strokec4 .initState();\
+    \cf7 \strokec7 // Kh\uc0\u7903 i t\u7841 o camera controller\cf4 \strokec4 \
+    controller = CameraController(cameras[\cf9 \strokec9 0\cf4 \strokec4 ], ResolutionPreset.medium);\
+    controller.initialize().then((_) \{\
+      \cf2 \strokec2 if\cf4 \strokec4  (!mounted) \{\
+        \cf2 \strokec2 return\cf4 \strokec4 ;\
+      \}\
+      setState(() \{\
+        _isInitialized = \cf2 \strokec2 true\cf4 \strokec4 ;\
+      \});\
+      \cf7 \strokec7 // B\uc0\u7855 t \u273 \u7847 u stream h\'ecnh \u7843 nh t\u7915  camera\cf4 \strokec4 \
+      controller.startImageStream((CameraImage image) \{\
+        \cf7 \strokec7 // Th\uc0\u7921 c hi\u7879 n c\'e1c x\u7917  l\'fd h\'ecnh \u7843 nh \u7903  \u273 \'e2y\cf4 \strokec4 \
+      \});\
+    \});\
+  \}\
+\
+  \cf8 \strokec8 @override\cf4 \strokec4 \
+  \cf2 \strokec2 void\cf4 \strokec4  \cf6 \strokec6 dispose\cf4 \strokec4 () \{\
+    \cf7 \strokec7 // Ng\uc0\u7915 ng stream h\'ecnh \u7843 nh khi widget b\u7883  hu\u7927 \cf4 \strokec4 \
+    controller?.dispose();\
+    \cf10 \strokec10 super\cf4 \strokec4 .dispose();\
+  \}\
+\
+  Future<\cf2 \strokec2 void\cf4 \strokec4 > \cf6 \strokec6 _scanBarcode\cf4 \strokec4 () async \{\
+    \cf2 \strokec2 try\cf4 \strokec4  \{\
+      \cf9 \strokec9 final\cf4 \strokec4  \cf9 \strokec9 result\cf4 \strokec4  = await BarcodeScanner.scan();\
+      setState(() \{\
+        _result = result.rawContent;\
+      \});\
+    \} on PlatformException \cf6 \strokec6 catch\cf4 \strokec4  (e) \{\
+      \cf2 \strokec2 if\cf4 \strokec4  (e.code == BarcodeScanner.cameraAccessDenied) \{\
+        setState(() \{\
+          _result = \cf5 \strokec5 "Camera permission was denied"\cf4 \strokec4 ;\
+        \});\
+      \} \cf2 \strokec2 else\cf4 \strokec4  \{\
+        setState(() \{\
+          _result = \cf5 \strokec5 "Unknown error: $e"\cf4 \strokec4 ;\
+        \});\
+      \}\
+    \} on FormatException \{\
+      setState(() \{\
+        _result = \cf5 \strokec5 "You pressed the back button before scanning anything"\cf4 \strokec4 ;\
+      \});\
+    \} \cf2 \strokec2 catch\cf4 \strokec4  (e) \{\
+      setState(() \{\
+        _result = \cf5 \strokec5 "Unknown error: $e"\cf4 \strokec4 ;\
+      \});\
+    \}\
+  \}\
+\
+  \cf8 \strokec8 @override\cf4 \strokec4 \
+  Widget \cf6 \strokec6 build\cf4 \strokec4 (BuildContext context) \{\
+    \cf2 \strokec2 if\cf4 \strokec4  (!_isInitialized) \{\
+      \cf2 \strokec2 return\cf4 \strokec4  Container();\
+return Stack(\
+  \cf5 \strokec5 children\cf4 \strokec4 : <Widget>[\
+    \cf7 \strokec7 // Hi\uc0\u7875 n th\u7883  camera preview\cf4 \strokec4 \
+    \cf10 \strokec10 CameraPreview\cf4 \strokec4 (controller),\
+    \cf7 \strokec7 // Hi\uc0\u7875 n th\u7883  n\'fat qu\'e9t\cf4 \strokec4 \
+    \cf10 \strokec10 Positioned\cf4 \strokec4 (\
+      \cf5 \strokec5 bottom\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 left\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 right\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 child\cf4 \strokec4 : \cf10 \strokec10 ElevatedButton\cf4 \strokec4 (\
+        \cf5 \strokec5 onPressed\cf4 \strokec4 : _scanBarcode,\
+        \cf5 \strokec5 child\cf4 \strokec4 : \cf10 \strokec10 Text\cf4 \strokec4 (\cf5 \strokec5 'Qu\'e9t m\'e3 v\uc0\u7841 ch'\cf4 \strokec4 ),\
+      ),\
+    ),\
+    \cf7 \strokec7 // Hi\uc0\u7875 n th\u7883  k\u7871 t qu\u7843  qu\'e9t\cf4 \strokec4 \
+    \cf10 \strokec10 Positioned\cf4 \strokec4 (\
+      \cf5 \strokec5 bottom\cf4 \strokec4 : \cf9 \strokec9 64.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 left\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 right\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ,\
+      \cf5 \strokec5 child\cf4 \strokec4 : \cf10 \strokec10 Text\cf4 \strokec4 (\
+        _result ?? \cf5 \strokec5 ''\cf4 \strokec4 ,\
+        \cf5 \strokec5 style\cf4 \strokec4 : \cf10 \strokec10 TextStyle\cf4 \strokec4 (\cf5 \strokec5 fontSize\cf4 \strokec4 : \cf9 \strokec9 16.0\cf4 \strokec4 ),\
+        \cf5 \strokec5 textAlign\cf4 \strokec4 : TextAlign.center,\
+      ),\
+    ),\
+  ],\
+);}
