@@ -4,7 +4,7 @@ export default function Input(props) {
     const _type = props.type ?? "text";
     const _placeholder = props.placeholder ?? "";
     const _className = props.className ?? "";
-    const _changeEvent = props.change ?? null;
+    const _changeEvent = props.onChange ?? null;
     const _keyDownEvent = props.onKeyDown ?? null;
     const _keyUpEvent = props.onKeyUp ?? null;
     const _maxLength = props.maxLength ?? null;

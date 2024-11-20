@@ -9,7 +9,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App></App>
-    {/* <Card data={{"name": "test"}}></Card> */}
   </React.StrictMode>
 );
 

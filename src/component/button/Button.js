@@ -10,7 +10,7 @@ export function ButtonConfirm(props) {
     const _text = props.text ?? "";
     const _className = props.className ?? "";
     const _isDisable = props.isDisable ?? "";
-    const _onclick = props.onclick ?? null;
+    const _onclick = props.onClick ?? null;
 
     return (
         <button
