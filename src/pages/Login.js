@@ -11,7 +11,6 @@ function Login(e)
     return httpPost("User/Login", {user: "admin", password: "P@ssw0rd"})
     .then((res)=>{
         //console.log(res);
-
     })
     .catch((err) => {
         console.log(err);
