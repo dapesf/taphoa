@@ -1,32 +1,26 @@
-import { Router, Route, Routes } from 'react-router-dom';
-import { LoginPage } from './Login';
+import { Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { LoginPage } from './Login';
 import { HomePage } from './HomePage';
-
+import { ProtectedRoute } from "../services/redirectdRoute"
 
 export default function App({ props }) {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    let isLogged = true;
-
-    if (!localStorage.getItem('token')) {
-      isLogged = false;
-    }
-    setLoggedIn(isLogged);
-
-    return () => {
-      setLoggedIn(false);
-    };
-
-  }, []);
-
   return (
-    <div className='App'>
-      <Routes>
-        <Route path="/Login" exact element={<LoginPage />}></Route>
-        <Route path="/HomePage" exact element={<HomePage />}></Route>
-      </Routes>
-    </div>
+    <>
+      <div className='App'>
+      <span>This is App</span>
+        <Routes>
+          <Route path="/Login" exact element={<LoginPage />}></Route>
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </>
   );
 }

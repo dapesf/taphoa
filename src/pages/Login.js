@@ -1,23 +1,12 @@
-import Input from "../component/input/Input"
-import Text from "../component/text"
-import { ButtonConfirm } from "../component/button/Button"
-import { Route } from "react-router-dom"
+import { Text, Input, ButtonConfirm } from "../component/UIComponents"
+import { useNavigate } from "react-router-dom"
 import { httpPost } from "../services/httpClient"
-
-function Login(e)
-{
-    e.preventDefault();
-    
-    return httpPost("User/Login", {user: "admin", password: "P@ssw0rd"})
-    .then((res)=>{
-        //console.log(res);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-}
+import { useState, useRef } from "react"
 
 export function LoginPage() {
+    const navigate = useNavigate();
+    const userRef = useRef(null);
+    const passWordRef = useRef(null);
 
     const style = {
         forgotPw: {
@@ -32,9 +21,28 @@ export function LoginPage() {
     }
 
     const regexNumber = (e) => {
-        // if (e.key.match("[0-9]") == null && e.key != "Backspace" && e.key != "Delete") {
-        //     e.preventDefault();
-        // }
+        if (e.key.match("[0-9]") == null && e.key != "Backspace" && e.key != "Delete") {
+            e.preventDefault();
+        }
+    }
+
+    const Login = (e) => {
+        e.preventDefault();
+        var form = {
+            user: userRef.current.value,
+            password: passWordRef.current.value
+        }
+
+        return httpPost("User/Login", form)
+            .then((res) => {
+                console.log(res);
+                localStorage.setItem('token', res.data.token);
+                navigate('/HomePage');
+            })
+            .catch((err) => {
+                console.log(err);
+                navigate('/Login');
+            });
     }
 
     return (
@@ -45,10 +53,10 @@ export function LoginPage() {
                     <div className="card-body">
                         <form>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" />
+                                <Input type="tel" maxLength="10" inputRef={userRef} onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="password" placeholder="Mật khẩu" className="form-control" />
+                                <Input type="password" inputRef={passWordRef} placeholder="Mật khẩu" className="form-control" />
                             </div>
                             <div className="mb-3" style={{ textAlign: "right" }}>
                                 <a href="#" style={style.forgotPw}><Text text="Quên mật khẩu" /></a>
