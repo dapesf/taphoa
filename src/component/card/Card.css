@@ -1,8 +1,11 @@
-.Card {
+.card-container {
+    height: 150px;
+    margin: 8px;
+    padding: 10px;
     border-radius: 5px;
-    background-color: whitesmoke;
-    width: 30%;
-    height: 70px;
-    text-align: center;
-    vertical-align: middle;
+    background-color: #dee2e6;
+}
+
+.card-content {
+    display: block;
 }

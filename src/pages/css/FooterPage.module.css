@@ -1,0 +1,45 @@
+.footer-page-container {
+    width: 100%;
+    height: 10%;
+    position: fixed;
+    bottom: 0;
+    border: solid 1px #a1a1a1;
+    background-color: #dee2e6;
+}
+
+ .footer-page-navbar {
+    position: relative;
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.footer-page-navbar a {
+    float: left;
+    width: 20%;
+    height: 100%;
+    text-decoration: none;
+    background-repeat: no-repeat;
+    background-size: 85% 85%;
+    background-position: center;
+}
+
+.footer-page-home {
+    background-image: url('../../assets/home.jpg');
+}
+
+.footer-page-attention {
+    background-image: url('../../assets/attention.jpg');
+}
+
+.footer-page-camera {
+    background-image: url('../../assets/camera.jpg');
+}
+
+.footer-page-list {
+    background-image: url('../../assets/list.jpg');
+}
+
+.footer-page-settings {
+    background-image: url('../../assets/settings.jpg');
+}

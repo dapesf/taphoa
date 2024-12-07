@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import './Card.css';
+import { Text } from '../UIComponents';
 
-const Card = ({data}) => (
-  <div className="Card">
-    {data.name}
-  </div>
-);
+export default function Card(props) {
+  let id = props.id;
+  let value = props.value;
 
-Card.propTypes = {};
-
-Card.defaultProps = {};
-
-export default Card;
+  return (
+    <div className="card-container">
+      <Text text={id} style={"card-content"}/>
+      <Text text={value} style={"card-content"}/>
+    </div>
+  )
+}

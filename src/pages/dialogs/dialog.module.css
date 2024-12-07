@@ -1,0 +1,36 @@
+.dialog-info-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.dialog-modal {
+    width: 200px;
+    height: 150px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: greenyellow;
+}
+
+.dialog-header {}
+
+.dialog-content {}
+
+.dialog-footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.dialog-footer-left {
+    float: left;
+}
+
+.dialog-footer-right {
+    float: right;
+}

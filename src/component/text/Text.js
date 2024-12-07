@@ -1,6 +1,8 @@
 export default function Text(props) {
     const text = props.text ?? "";
+    const clas = props.style ?? "";
+
     return (
-        <span>{text}</span>
+        <span className={clas}>{text}</span>
     )
 }
