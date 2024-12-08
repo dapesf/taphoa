@@ -1,17 +1,17 @@
 import { Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useEffect, createContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useDialog } from './dialogs/DialogContext';
 import { ProtectedRoute } from "../services/redirectdRoute"
 import { LoginPage } from './Login';
-import { HomePage } from './HomePage';
+import { Page } from './Page';
 import { HeaderPage } from './HeaderPage';
 import { FooterPage } from './FooterPage';
-import { DialogInfo } from './dialogs/DialogInfo';
 import style from "./css/App.module.css"
 
-export default function App({ props }) {
+import { DialogRoute } from '../services/DialogRoute';
 
-  const { open, content, closeDialog } = useDialog();
+export default function App({ props }) {
+  const { open, dialogObject } = useDialog();
 
   useEffect(() => {
   }, [])
@@ -26,14 +26,16 @@ export default function App({ props }) {
             element={
               <ProtectedRoute>
                 <HeaderPage title='Hỗ trợ tiệm tạm hóa' />
-                <HomePage />
+                <Page />
                 <FooterPage />
               </ProtectedRoute>
             }
           />
         </Routes>
       </div>
-      {open ? <DialogInfo content={content} closeDialog={closeDialog} /> : null}
+      {open ?
+        <DialogRoute dialogObject={dialogObject} />
+        : null}
     </>
   );
 }

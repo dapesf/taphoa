@@ -1,4 +1,5 @@
-.home-page-container {
+.page-container {
     width: 100%;
     position: absolute;
+    margin-top: 40px;
 }

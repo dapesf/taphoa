@@ -4,5 +4,6 @@ import List from './list/List';
 import Box from './box/Box';
 import Card from './card/Card';
 import Text from './text/Text';
+import Select from './select/Select';
 
-export { Button, ButtonConfirm, Input, List, Box, Card, Text };
+export { Button, ButtonConfirm, Input, List, Box, Card, Text, Select };

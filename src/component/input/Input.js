@@ -4,6 +4,8 @@ export default function Input(props) {
     const _type = props.type ?? "text";
     const _placeholder = props.placeholder ?? "";
     const _className = props.className ?? "";
+    const _id = props.id ?? "";
+    const _name = props.name ?? null;
     const _changeEvent = props.onChange ?? null;
     const _keyDownEvent = props.onKeyDown ?? null;
     const _keyUpEvent = props.onKeyUp ?? null;
@@ -14,7 +16,9 @@ export default function Input(props) {
         <input
             type={_type}
             className={_className}
+            id={_id}
             placeholder={_placeholder}
+            name={_name}
             value={props.value}
             ref={_ref}
             maxLength={_maxLength}

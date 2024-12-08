@@ -4,10 +4,11 @@ import style from "./css/HomePage.module.css"
 import dummyData from '../assets/dummy/dataHomePage.js'
 import { Card, ButtonConfirm } from '../component/UIComponents';
 import { useDialog } from './dialogs/DialogContext.js';
+import { DialogInfo } from '../pages/dialogs/DialogInfo';
 
 export function HomePage() {
     const [notify, setNotify] = useState([])
-    const {settingContent, openDialog}= useDialog()
+    const { settingDialog, openDialog, closeDialog } = useDialog()
 
     function FetchData() {
         return new Promise((resolve, reject) => {
@@ -24,14 +25,14 @@ export function HomePage() {
     }, [])
 
     function openDialogInfo() {
-        settingContent('This is content!!!');
+        settingDialog(<DialogInfo content={'This is a tittle'} tittle={'This is content!!!'} closeDialog={closeDialog} />);
         openDialog();
     }
 
     return (
         <div className={style['home-page-container']}>
             <div>
-                <ButtonConfirm text="Open Dialog" onClick={() => { openDialogInfo()} }/>
+                <ButtonConfirm text="Open Dialog" onClick={() => { openDialogInfo() }} />
             </div>
             <div>
                 {notify.map((item) => {
