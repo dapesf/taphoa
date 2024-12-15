@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { ButtonConfirm, Text } from '../../component/UIComponents';
 import './css/Dialog.css';
 
-export function DialogInfo(props) {
+export function DialogConfirm(props) {
     return (
         <div className='dialog-container'>
             <div className='dialog-modal'>
@@ -14,7 +13,7 @@ export function DialogInfo(props) {
                 </div>
                 <div className='dialog-footer'>
                     <div className='dialog-footer-left'>
-
+                        <ButtonConfirm text='Ok' onClick={props.closeDialog} />
                     </div>
                     <div className='dialog-footer-right'>
                         <ButtonConfirm text='Close' onClick={props.closeDialog} />

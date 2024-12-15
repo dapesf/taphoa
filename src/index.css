@@ -1,5 +1,8 @@
 html{
-  background-color: #bbbbbb;
+  width: 375px !important;
+  height: 100%;
+  border: 1px solid;
+  margin: auto;
 }
 
 body {

@@ -2,9 +2,9 @@ import './Input.css';
 
 export default function Input(props) {
     const _type = props.type ?? "text";
-    const _placeholder = props.placeholder ?? "";
-    const _className = props.className ?? "";
-    const _id = props.id ?? "";
+    const _placeholder = props.placeholder ?? null;
+    const _className = props.className ?? null;
+    const _id = props.id ?? null;
     const _name = props.name ?? null;
     const _changeEvent = props.onChange ?? null;
     const _keyDownEvent = props.onKeyDown ?? null;

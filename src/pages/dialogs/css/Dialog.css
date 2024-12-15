@@ -1,6 +1,6 @@
 .dialog-container {
     position: fixed;
-    width: 100%;
+    width: 375px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
@@ -14,8 +14,6 @@
     transform: translate(-50%, -50%);
     background-color: #e0ecd4;
 }
-
-.dialog-header {}
 
 .dialog-content {
     margin: 0px 0px 30px 0px;

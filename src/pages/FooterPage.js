@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Text } from "../component/UIComponents"
 import style from "./css/FooterPage.module.css"
-import { ProtectedRoute } from '../services/redirectdRoute';
 
 export function FooterPage(props) {
     const [title, setTittle] = useState('')
@@ -19,7 +17,7 @@ export function FooterPage(props) {
                     <Link to="/HomePage" className={style["footer-page-home"]}/>
                 </span>
                 <span>
-                    <Link to="#" className={style["footer-page-attention"]}/>
+                    <Link to="/Announce" className={style["footer-page-attention"]}/>
                 </span>
                 <span>
                     <Link to="#" className={style["footer-page-camera"]}/>
@@ -28,7 +26,7 @@ export function FooterPage(props) {
                     <Link to="/ProductList" className={style["footer-page-list"]}/>
                 </span>
                 <span>
-                    <Link to="#" className={style["footer-page-settings"]}/>
+                    <Link to="/Settings" className={style["footer-page-settings"]}/>
                 </span>
             </div>
         </div>

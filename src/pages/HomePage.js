@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import style from "./css/HomePage.module.css"
 import dummyData from '../assets/dummy/dataHomePage.js'
 import { Card, ButtonConfirm } from '../component/UIComponents';
-import { useDialog } from './dialogs/DialogContext.js';
+import { useDialog } from '../hooks/DialogContext.js';
 import { DialogInfo } from '../pages/dialogs/DialogInfo';
 
 export function HomePage() {
@@ -31,9 +31,6 @@ export function HomePage() {
 
     return (
         <div className={style['home-page-container']}>
-            <div>
-                <ButtonConfirm text="Open Dialog" onClick={() => { openDialogInfo() }} />
-            </div>
             <div>
                 {notify.map((item) => {
                     return <Card key={item.id} id={item.id} value={item.value} />

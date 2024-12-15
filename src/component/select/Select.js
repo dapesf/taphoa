@@ -13,7 +13,7 @@ export default function Select(props) {
             onChange={_changeEvent}>
             {
                 _option.map((item, id) => {
-                    return <option value={id}>{item}</option>
+                    return <option key={id} value={id}>{item}</option>
                 })
             }
         </select>

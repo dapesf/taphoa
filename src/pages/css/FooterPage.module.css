@@ -1,5 +1,5 @@
 .footer-page-container {
-    width: 100%;
+    width: 375px;
     height: 10%;
     position: fixed;
     bottom: 0;
@@ -20,7 +20,7 @@
     height: 100%;
     text-decoration: none;
     background-repeat: no-repeat;
-    background-size: 85% 85%;
+    background-size: calc(100% - 10%) calc(100% - 20%);
     background-position: center;
 }
 

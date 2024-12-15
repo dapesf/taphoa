@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import style from "./css/Page.module.css"
 import { ProductList } from './ProductList.js';
 import { HomePage } from './HomePage.js';
+import { Settings } from './Settings.js';
+import { Announce } from './Announce.js';
 
 export function Page() {
-    useEffect(() => {
-    }, [])
 
     return (
         <>
@@ -15,7 +15,13 @@ export function Page() {
                     <Route path="/HomePage" element={<HomePage />} />
                 </Routes>
                 <Routes>
+                    <Route path="/Announce" element={<Announce />} />
+                </Routes>
+                <Routes>
                     <Route path="/ProductList" element={<ProductList />} />
+                </Routes>
+                <Routes>
+                    <Route path="/Settings" element={<Settings />} />
                 </Routes>
             </div>
         </>

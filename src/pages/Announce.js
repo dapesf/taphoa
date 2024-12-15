@@ -1,0 +1,77 @@
+import { useState, useEffect } from "react"
+import { ButtonConfirm, Input, Text } from "../component/UIComponents"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan, faListCheck } from '@fortawesome/free-solid-svg-icons'
+import { DialogConfirm } from './dialogs/DialogConfirm';
+import { useDialog } from '../hooks/DialogContext.js';
+import { AnnounceServiceGetAnnounce } from "../services/AnnounceService.js";
+import { useLoading } from '../hooks/LoadingContext';
+import "./css/Announce.css"
+
+export function Announce() {
+    const [ck, setCk] = useState(false);
+    const [data, setData] = useState([]);
+    const { settingLoading } = useLoading(false);
+    const { settingDialog, settingContent, content, openDialog, closeDialog } = useDialog();
+
+    const click = () => {
+        setCk(!ck);
+    }
+
+    const openDialogConfirm = () => {
+        settingContent("Bạn có muốn xóa không!");
+        settingDialog(<DialogConfirm content={content} closeDialog={closeDialog} />);
+        openDialog();
+    }
+
+    const loadData = async () => {
+        settingLoading(true);
+        const res = await AnnounceServiceGetAnnounce();
+        setData(res.data);
+        settingLoading(false);
+
+    }
+
+    useEffect(() => {
+        loadData();
+        return () => {
+            setData([]);
+        }
+    }, [])
+
+    return (
+        <>
+            <div className="annouce-action">
+                <ButtonConfirm onClick={click}>
+                    <FontAwesomeIcon icon={faListCheck} size="2x" />
+                </ButtonConfirm>
+                <ButtonConfirm className="trash" onClick={openDialogConfirm}>
+                    <FontAwesomeIcon icon={faTrashCan} size="2x" />
+                </ButtonConfirm>
+            </div>
+            <div className="annouce-container">
+                {
+                    data.map((item, index) => {
+                        return (
+                            <div key={item.cd_announce}>
+                                <div className="annouce-list">
+                                    {ck && (
+                                        <div className="annouce-check">
+                                            <Input type="checkbox" />
+                                        </div>
+                                    )}
+                                    <div className="annouce-content">
+                                        <Text text={item.nm_content} style={"annouce-text"} />
+                                        <br></br>
+                                        <Text text={item.dt_send} />
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
+                }
+            </div>
+        </>
+    )
+}
