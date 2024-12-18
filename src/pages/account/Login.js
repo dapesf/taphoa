@@ -5,6 +5,19 @@ import { useLoading } from "../../hooks/LoadingContext"
 import "./Login.css"
 import { useRef } from "react"
 
+ const validation = {
+    phone:
+    {
+        methods: {
+            numeric: true
+        }
+        , name: "Phone"
+        , message: {
+            numeric: "numeric"
+        }
+    }
+}
+
 export function LoginPage() {
     const navigate = useNavigate();
     const userRef = useRef(null);

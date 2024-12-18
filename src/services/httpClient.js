@@ -16,7 +16,12 @@ let URL = process.env.REACT_APP_API_URL;
 export async function httpGet(endpoint, param) {
     if (endpoint === "" || endpoint === null || endpoint === undefined)
         return new Promise({message: "parameter is required"});
-    return axios.get(URL + endpoint, config);
+    return axios.get(URL + endpoint, config)
+    // .then((res) => {
+    //     console.log(res);
+    // }).catch((err) => {
+    //     console.log(err);
+    // })
 }
 
 // method POST

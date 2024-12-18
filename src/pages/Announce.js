@@ -26,10 +26,13 @@ export function Announce() {
 
     const loadData = async () => {
         settingLoading(true);
-        const res = await AnnounceServiceGetAnnounce();
-        setData(res.data);
-        settingLoading(false);
-
+        await AnnounceServiceGetAnnounce()
+        .then((res) => {
+            setData(res.data);
+        }).catch((err) => {
+        }).finally(()=>{
+            settingLoading(false);
+        });
     }
 
     useEffect(() => {
