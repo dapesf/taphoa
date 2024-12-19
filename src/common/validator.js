@@ -1,20 +1,51 @@
 import { validation } from "./validation"
 
-function validator(context, form) {
-    if (typeof (context) !== 'object')
-        return;
+class Validator {
+    prepare = {};
 
-    const arr_func = [];
+    HandlePrepareMethod(method) {
+        const methods = []
+        for (const [key, obj] of Object.entries(method)) {
 
-    for (const [element, objects] of Object.entries(context)) {
-        for (const [key, object] of Object.entries(ontext[key].methods)) {
+            switch (typeof(obj)) {
+                case 'boolean':
+                    methods.push(validation[key])
+                    break;
+                case 'function':
+                    methods.push(obj);
+                    break;
+                default:
+                    break;
+            }
+        };
 
-            if (typeof (object) === 'boolean') {
-                if (key === validation[key])
-                    arr_func.push(validation[key])
+        return methods;
+    }
+
+    constructor(context, form) {
+        if (typeof (context) !== 'object')
+            return;
+
+        for (const [keys, component] of Object.entries(context)) {
+            for (const [key, method] of Object.entries(component)) {
+
+                var object = {};
+
+                switch (key) {
+                    case "methods":
+                        this.HandlePrepareMethod(method);
+                        break;
+                    default:
+                        break;
+                }
+
+
             }
         }
-    }
-}
 
-export { validator }
+        console.log(this.prepare)
+    }
+
+
+}
+export { Validator }

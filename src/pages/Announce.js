@@ -8,6 +8,17 @@ import { AnnounceServiceGetAnnounce } from "../services/AnnounceService.js";
 import { useLoading } from '../hooks/LoadingContext';
 import "./css/Announce.css"
 
+const validations =
+{
+    method: {
+        isNumeric: true
+    },
+    name: "Phone",
+    message:{
+        numeric: "Is not numeric!"
+    }
+}
+
 export function Announce() {
     const [ck, setCk] = useState(false);
     const [data, setData] = useState([]);
@@ -36,6 +47,7 @@ export function Announce() {
     }
 
     useEffect(() => {
+        //Validator(validations, {})
         loadData();
         return () => {
             setData([]);
