@@ -7,21 +7,31 @@ import "./Login.css"
 import { useRef, useEffect } from "react"
 
 export function LoginPage() {
+    let validator;
     const navigate = useNavigate();
     const userRef = useRef(null);
     const passWordRef = useRef(null);
     const { settingLoading } = useLoading();
-    const validations = {
+    let validations = {
         phone:
         {
             methods: {
                 isNumeric: true,
-                isTest: () => {}
+                isTest: () => { }
             }
             , name: "Phone"
-            //, element: userRef.current.element
-            , message: {
-                isNumeric: "numeric"
+            , messages: {
+                isNumeric: "is Numeric message"
+            }
+        },
+        password:
+        {
+            methods: {
+                isTest: () => { }
+            }
+            , name: "Password"
+            , messages: {
+                isTest: "is Test message"
             }
         }
     };
@@ -33,6 +43,7 @@ export function LoginPage() {
     }
 
     const Login = async (e) => {
+
         e.preventDefault();
         settingLoading(true)
 
@@ -41,20 +52,30 @@ export function LoginPage() {
             password: passWordRef.current.value
         }
 
-        return httpPost("Authentication/Login", form)
+        await validator.excute()
             .then((res) => {
-                localStorage.setItem('token', res.data.token);
-                navigate('/HomePage');
-            })
-            .catch((err) => {
-                navigate('/Login');
-            }).finally(() => {
-                settingLoading(false);
+                //return httpPost("Authentication/Login", form)
+               return Promise.resolve("")
+                    .then((res) => {
+                        localStorage.setItem('token', res.data.token);
+                        navigate('/HomePage');
+                    })
+                    .catch((err) => {
+                        navigate('/Login');
+                    }).finally(() => {
+                        settingLoading(false);
+                    })
             })
     }
 
+    const createValidator = () => {
+        validations.phone.element = userRef.current;
+        validations.password.element = passWordRef.current;
+        validator = new Validator(validations, { phone: userRef, password: passWordRef });
+    };
+
     useEffect(() => {
-        new Validator(validations, { phone: userRef, password: passWordRef });
+        createValidator();
         return () => { }
     })
 

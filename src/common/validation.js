@@ -3,10 +3,12 @@
     isNumeric: 
     (prop, value) => 
     {
-        if(isNaN(value))
-            return false;
-
-        return true;
+        setTimeout(() => {
+            if(isNaN(value))
+                return false;
+    
+            return true;
+        }, 1);
     }
     , isNull:
     (prop, value) => 
