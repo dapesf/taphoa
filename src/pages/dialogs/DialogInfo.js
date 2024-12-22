@@ -10,7 +10,12 @@ export function DialogInfo(props) {
                     <Text text={props.tittle} />
                 </div>
                 <div className='dialog-content'>
-                    <Text text={props.content} />
+                    {
+                        props.content.map((m, k) => {
+                            return <Text key={k} text={m} />
+                        })
+                    }
+                    
                 </div>
                 <div className='dialog-footer'>
                     <div className='dialog-footer-left'>

@@ -24,3 +24,7 @@ code {
 body::-webkit-scrollbar {
   display: none;
 }
+
+.has-error{
+  border-color: red;
+}

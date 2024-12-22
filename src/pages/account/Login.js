@@ -1,37 +1,46 @@
+import { useRef, useEffect } from "react"
 import { Text, Input, ButtonConfirm } from "../../component/UIComponents"
 import { useNavigate } from "react-router-dom"
 import { httpPost } from "../../services/httpClient"
 import { useLoading } from "../../hooks/LoadingContext"
+import { DialogInfo } from "../dialogs/DialogInfo.js"
+import { useDialog } from "../../hooks/DialogContext.js"
 import { Validator } from "../../common/validator.js";
 import "./Login.css"
-import { useRef, useEffect } from "react"
+
 
 export function LoginPage() {
     let validator;
     const navigate = useNavigate();
     const userRef = useRef(null);
     const passWordRef = useRef(null);
+    const { settingDialog, openDialog, closeDialog } = useDialog()
     const { settingLoading } = useLoading();
     let validations = {
         phone:
         {
             methods: {
                 isNumeric: true,
-                isTest: () => { }
+                isNull: true,
+                isTest: () => {
+                    return true
+                }
             }
-            , name: "Phone"
+            , name: "Số điện thoại"
             , messages: {
-                isNumeric: "is Numeric message"
+                isNumeric: "Chỉ nhập số.",
+                isNull: "Xin hãy nhập.",
+                isTest: "is test"
             }
         },
         password:
         {
             methods: {
-                isTest: () => { }
+                isNull: true,
             }
-            , name: "Password"
+            , name: "Mật khẩu"
             , messages: {
-                isTest: "is Test message"
+                isNull: "Xin hãy nhập."
             }
         }
     };
@@ -52,19 +61,27 @@ export function LoginPage() {
             password: passWordRef.current.value
         }
 
-        await validator.excute()
+        const valid = await validator.Excute();
+        if (!valid) {
+            return Promise.reject("validate fail")
+                .catch(() => {
+                    settingDialog(<DialogInfo content={validator.msgErrors} tittle={'Alert!'} closeDialog={closeDialog} />);
+                    openDialog();
+                })
+                .finally(() => {
+                    settingLoading(false);
+                })
+        }
+        return httpPost("Authentication/Login", form)
             .then((res) => {
-                //return httpPost("Authentication/Login", form)
-               return Promise.resolve("")
-                    .then((res) => {
-                        localStorage.setItem('token', res.data.token);
-                        navigate('/HomePage');
-                    })
-                    .catch((err) => {
-                        navigate('/Login');
-                    }).finally(() => {
-                        settingLoading(false);
-                    })
+                localStorage.setItem('token', res.data.token);
+                navigate('/HomePage');
+            })
+            .catch((err) => {
+                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
+                openDialog();
+            }).finally(() => {
+                settingLoading(false);
             })
     }
 

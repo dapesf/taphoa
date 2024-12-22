@@ -1,24 +1,10 @@
+import { isUndefOrStrEmpty } from "./common";
 import { validation } from "./validation"
 
 class Validator {
     prepare = {};
-
-    HandlePrepareMethod(key, method) {
-        let methods = {};
-
-        switch (typeof (method)) {
-            case 'boolean':
-                methods = validation[key];
-                break;
-            case 'function':
-                methods = method;
-                break;
-            default:
-                break;
-        }
-
-        return methods;
-    }
+    isValid = true;
+    msgErrors = []
 
     constructor(context, form) {
         if (typeof (context) !== 'object')
@@ -43,59 +29,103 @@ class Validator {
         }
     }
 
-    async createTask(taskId, val, method) {
-        return function() {
-            return new Promise((resolve, reject) => {
+    HandlePrepareMethod(key, method) {
+        let methods = {};
 
-                let md = async () => {
-                    method(null, val);
-                }
+        switch (typeof (method)) {
+            case 'boolean':
+                methods = validation[key];
+                break;
+            case 'function':
+                methods = method;
+                break;
+            default:
+                break;
+        }
 
-                var ret = md()
+        return methods;
+    }
 
-                resolve({id: taskId, status: ret});
-            });
+    CreateTask(taskId, val, method) {
+        return async function () {
+            return await Promise.resolve(method(null, val))
+                .then((res) => {
+                    return {
+                        taskId: taskId,
+                        value: res
+                    }
+                });
         };
     }
 
-    async excute() {
-        if (!this.prepare)
-            return Promise.reject();
+    CreateMessage(_name, _msg) {
+        let name = "",
+            msg = "";
 
-        let context = {},
-            methodExcute = {};
+        if (!isUndefOrStrEmpty(_name)) {
+            name = _name
+        }
 
-        Object.assign(context, this.prepare);
+        if (!isUndefOrStrEmpty(_msg)) {
+            msg = _msg
+        }
 
-        return new Promise((resolve, reject) => {
-            for (const [prop, component] of Object.entries(context)) {
-                var val = component.element.value;
-                if (val === undefined)
-                    val = null;
+        this.msgErrors.push(name + " : " + msg)
+    }
 
-                let tasks = [];
+    ResetMessage() {
+        this.msgErrors = [];
+    }
 
-                for (const [id, method] of Object.entries(component.methods)) {
-                    //methodExcute[id] = false;
-                    tasks.push(this.createTask(id, val, method))
-                }
-                Promise.all(tasks.map(task => task()))
-                .then((res) => {
-                    console.log(res);
-                }).catch(error => {
-                    //console.error("Có lỗi xảy ra:", error);
-                });
-                //context[prop].methods = methodExcute;
+    ValidAction(context) {
+        context.element.classList.remove("has-error")
+        context.methods.forEach((val, index) => {
+            if (val.value) {}
+            else {
+                context.element.classList.add("has-error")
+                this.CreateMessage(context.name, context.messages[val.taskId]);
+                this.isValid = false;
             }
         })
 
-        // new Promise(() => {
+    }
 
-        // }, () => {
-        //     throw ("excute exception!")
-        // });
+    async Excute() {
 
-        console.log(context);
+        this.ResetMessage();
+
+        if (!this.prepare)
+            return Promise.reject();
+
+        let context = {};
+
+        Object.assign(context, this.prepare);
+
+        for (const [prop, component] of Object.entries(context)) {
+            var val = component.element.value;
+            if (val === undefined)
+                val = null;
+
+            let tasks = [];
+
+            for (const [id, method] of Object.entries(component.methods)) {
+                tasks.push(this.CreateTask(id, val, method))
+            }
+
+            await Promise.all(tasks.map(task => {
+                return task()
+            })).then((res) => {
+                //console.log(res);
+                context[prop].methods = res;
+                this.ValidAction(context[prop]);
+            }).catch(error => {
+                //console.error("Có lỗi xảy ra:", error);
+            });
+
+        }
+        //console.log(context)
+
+        return this.isValid;
     }
 
 }
