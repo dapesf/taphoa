@@ -5,6 +5,7 @@ import { ProductList } from './ProductList.js';
 import { HomePage } from './HomePage.js';
 import { Settings } from './Settings.js';
 import { Announce } from './Announce.js';
+import { ChangePassword } from './ChangePassword.js';
 
 export function Page() {
 
@@ -22,6 +23,9 @@ export function Page() {
                 </Routes>
                 <Routes>
                     <Route path="/Settings" element={<Settings />} />
+                </Routes>
+                <Routes>
+                    <Route path="/ChangePassword" element={<ChangePassword />} />
                 </Routes>
             </div>
         </>

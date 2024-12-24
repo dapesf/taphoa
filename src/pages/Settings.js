@@ -1,17 +1,18 @@
-import { Text} from '../component/UIComponents';
+import { Text } from '../component/UIComponents';
 import { SettingServiceLogout } from '../services/SettingPageService';
 import { useNavigate } from 'react-router-dom';
 import { useLoading } from '../hooks/LoadingContext';
+import { Link } from 'react-router-dom';
 import "./css/Settings.css"
 
 export function Settings() {
     const navigate = useNavigate();
-    const {settingLoading} = useLoading();
+    const { settingLoading } = useLoading();
 
     async function Logout() {
         settingLoading(true);
         await SettingServiceLogout();
-        
+
         setTimeout(() => {
             settingLoading(false);
             navigate("/Login")
@@ -22,7 +23,9 @@ export function Settings() {
         <>
             <div className='setting-container'>
                 <div className='setting-content'>
-                    <Text text={"Đổi mật khẩu"} style={'setting-action'} />
+                    <Link to="/ChangePassword">
+                        <Text text={"Đổi mật khẩu"} style={'setting-action'} />
+                    </Link>
                     <hr></hr>
                     <Text text={"Thông báo"} style={'setting-action'} />
                     <hr></hr>
