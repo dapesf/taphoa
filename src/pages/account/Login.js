@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react"
 import { Text, Input, ButtonConfirm } from "../../component/UIComponents"
 import { useNavigate } from "react-router-dom"
-import { httpPost } from "../../services/httpClient"
+import { httpGet, httpPost } from "../../services/httpClient"
 import { useLoading } from "../../hooks/LoadingContext"
 import { DialogInfo } from "../dialogs/DialogInfo.js"
 import { useDialog } from "../../hooks/DialogContext.js"
@@ -85,6 +85,21 @@ export function LoginPage() {
             })
     }
 
+    const ForgotPw = async(e) => {
+        e.preventDefault();
+
+        return httpGet("Authentication/ForgotPw", {email: "dmtest8899@gmail.com"})
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
+                openDialog();
+            }).finally(() => {
+                settingLoading(false);
+            })
+    }
+
     const createValidator = () => {
         validations.phone.element = userRef.current;
         validations.password.element = passWordRef.current;
@@ -110,7 +125,7 @@ export function LoginPage() {
                                 <Input type="text" id="txtPassword" inputRef={passWordRef} placeholder="Mật khẩu" className="form-control" />
                             </div>
                             <div className="mb-3" style={{ textAlign: "right" }}>
-                                <a href="#" className="forgotPw"><Text text="Quên mật khẩu" /></a>
+                                <a href="#" className="forgotPw" onClick={ForgotPw}><Text text="Quên mật khẩu" /></a>
                             </div>
                             <div className="btnLogin">
                                 <ButtonConfirm onClick={Login} className="btn btn-confirm" text="Đăng nhập" />

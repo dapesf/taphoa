@@ -29,7 +29,9 @@ export function Settings() {
                     <hr></hr>
                     <Text text={"Thông báo"} style={'setting-action'} />
                     <hr></hr>
-                    <Text text={"Đổi số điện thoại"} style={'setting-action'} />
+                    <Link to="/ChangePhone">
+                        <Text text={"Đổi số điện thoại"} style={'setting-action'} />
+                    </Link>
                     <hr></hr>
                     <Text text={"Đăng xuất"} style={'setting-action'} onClick={Logout} />
                     <hr></hr>

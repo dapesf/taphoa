@@ -1,69 +1,51 @@
 import { useEffect, useRef } from 'react';
-import { Input, ButtonConfirm } from '../component/UIComponents';
-import { httpPost } from '../services/httpClient';
+import { Input, ButtonConfirm } from '../component/UIComponents.js';
+import { httpPost } from '../services/httpClient.js';
 import { useNavigate } from "react-router-dom"
-import { useLoading } from '../hooks/LoadingContext';
-import { DialogInfo } from './dialogs/DialogInfo';
-import { useDialog } from '../hooks/DialogContext';
+import { useLoading } from '../hooks/LoadingContext.js';
+import { DialogInfo } from './dialogs/DialogInfo.js';
+import { useDialog } from '../hooks/DialogContext.js';
 import { Validator } from '../common/validator.js';
 import "./css/ChangePassword.css"
 
-export function ChangePassword() {
+export function ChangePhone() {
     let validator;
-    const odPwRef = useRef(null);
-    const nwPwRef = useRef(null);
-    const cfPwRef = useRef(null);
+    const nwPhoneRef = useRef(null);
+    const pwRef = useRef(null);
     const { settingDialog, openDialog, closeDialog } = useDialog()
     const { settingLoading } = useLoading();
     const navigate = useNavigate();
     let validations = {
-        oldPw:
+        newPhone:
         {
             methods: {
                 isNull: true,
             }
-            , name: "Mật khẩu mới"
+            , name: "Nhập số điện thoại mới"
             , messages: {
                 isNull: "Xin hãy nhập."
             }
         },
-        newPw:
+        passWord:
         {
             methods: {
                 isNull: true,
             }
-            , name: "Nhập mật khẩu mới"
+            , name: "Nhập mật khẩu"
             , messages: {
                 isNull: "Xin hãy nhập."
-            }
-        },
-        cfPw:
-        {
-            methods: {
-                isNull: true,
-                isCorrtect: () => {
-                    const cfPwRef = cfPwRef.current.value,
-                    nwPw = nwPwRef.current.value;
-
-                    return (!(cfPwRef !== nwPw))
-                }
-            }
-            , name: "Nhập mật khẩu mới"
-            , messages: {
-                isNull: "Xin hãy nhập.",
-                isCorrtect: "Xác nhận mật khẩu không giống nhau."
             }
         }
     };
 
-    const cmdChangePass = async (e) => {
+    const cmdChangePhone = async (e) => {
 
         e.preventDefault();
         settingLoading(true)
 
         var form = {
-            oldPw: odPwRef.current.value,
-            newPw: nwPwRef.current.value
+            newPhone: nwPhoneRef.current.value,
+            passWord: pwRef.current.value
         }
 
         const valid = await validator.Excute();
@@ -77,7 +59,7 @@ export function ChangePassword() {
                     settingLoading(false);
                 })
         }
-        return httpPost("Authentication/ChangePassword", form)
+        return httpPost("Authentication/ChangePhone", form)
             .then((res) => {
                 localStorage.removeItem('token')
                 settingLoading(false);
@@ -92,10 +74,9 @@ export function ChangePassword() {
     }
 
     const createValidator = () => {
-        validations.oldPw.element = odPwRef.current;
-        validations.newPw.element = nwPwRef.current;
-        validations.cfPw.element = cfPwRef.current;
-        validator = new Validator(validations, { oldPw: odPwRef, newPw: nwPwRef, cfPw: cfPwRef });
+        validations.newPhone.element = nwPhoneRef.current;
+        validations.passWord.element = pwRef.current;
+        validator = new Validator(validations, { newPhone: nwPhoneRef, passWord: pwRef });
     };
 
     useEffect(() => {
@@ -107,16 +88,13 @@ export function ChangePassword() {
         <>
             <div className='chg-pw-list-content'>
                 <div>
-                    <Input type="password" inputRef={odPwRef} placeholder="Mật khẩu cũ" />
+                    <Input type="number" inputRef={nwPhoneRef} placeholder="Số điện thoại mới" />
                 </div>
                 <div>
-                    <Input type="password" inputRef={nwPwRef} placeholder="Mật khẩu mới" />
+                    <Input type="password" inputRef={pwRef} placeholder="Mật khẩu" />
                 </div>
                 <div>
-                    <Input type="password" inputRef={cfPwRef} placeholder="Nhập mật khẩu mới" />
-                </div>
-                <div>
-                    <ButtonConfirm text={'OK'} onClick={cmdChangePass}></ButtonConfirm>
+                    <ButtonConfirm text={'OK'} onClick={cmdChangePhone}></ButtonConfirm>
                 </div>
             </div>
 
