@@ -1,5 +1,28 @@
 .Input {
-    width: 79%;
-    height: 20px;
-    display: inline-block;
-  }
+  width: 79%;
+  height: 20px;
+  display: inline-block;
+}
+
+.input-container {
+  position: relative;
+}
+
+.bubble {
+  position: absolute;
+  /* top: -30px; */
+  left: 0;
+  width: 100%;
+  /* background-color: #ae9393; */
+  padding: 10px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  font-size: 14px;
+  /* color: #333; */
+  display: none;
+  color: red;
+}
+
+input:focus+.bubble {
+  /* display: contents; */
+}

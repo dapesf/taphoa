@@ -2,7 +2,7 @@ const validation =
 {
     isNumeric:
         async (prop, value) => {
-            await sleep(200);
+            //await sleep(200);
             if (isNaN(value))
                 return false;
 
@@ -10,7 +10,7 @@ const validation =
         }
     , isNull:
         async (prop, value) => {
-            await sleep(200);
+            //await sleep(200);
             if (value === "" || value === undefined || value === null)
                 return false;
 

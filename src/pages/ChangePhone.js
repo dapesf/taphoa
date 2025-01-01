@@ -44,15 +44,15 @@ export function ChangePhone() {
         settingLoading(true)
 
         var form = {
-            newPhone: nwPhoneRef.current.value,
-            passWord: pwRef.current.value
+            nwPhone: nwPhoneRef.current.value,
+            password: pwRef.current.value
         }
 
         const valid = await validator.Excute();
         if (!valid) {
             return Promise.reject("validate fail")
                 .catch(() => {
-                    settingDialog(<DialogInfo content={validator.msgErrors} tittle={'Alert!'} closeDialog={closeDialog} />);
+                    settingDialog(<DialogInfo content={validator.msgErrors} type={'alert'} closeDialog={closeDialog} />);
                     openDialog();
                 })
                 .finally(() => {
@@ -66,7 +66,7 @@ export function ChangePhone() {
                 navigate("/Login")
             })
             .catch((err) => {
-                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
+                settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);
                 openDialog();
             }).finally(() => {
                 settingLoading(false);

@@ -70,7 +70,7 @@ export function ChangePassword() {
         if (!valid) {
             return Promise.reject("validate fail")
                 .catch(() => {
-                    settingDialog(<DialogInfo content={validator.msgErrors} tittle={'Alert!'} closeDialog={closeDialog} />);
+                    settingDialog(<DialogInfo content={validator.msgErrors} type={'alert'} closeDialog={closeDialog} />);
                     openDialog();
                 })
                 .finally(() => {
@@ -84,7 +84,7 @@ export function ChangePassword() {
                 navigate("/Login")
             })
             .catch((err) => {
-                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
+                settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);
                 openDialog();
             }).finally(() => {
                 settingLoading(false);

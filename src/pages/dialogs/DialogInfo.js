@@ -3,9 +3,13 @@ import { ButtonConfirm, Text } from '../../component/UIComponents';
 import './css/Dialog.css';
 
 export function DialogInfo(props) {
+
+    const color = props.type == "alert" ? "dlg-alert" : "dlg-info";
+    const classNm = "dialog-modal " + color;
+
     return (
         <div className='dialog-container'>
-            <div className='dialog-modal'>
+            <div className={classNm}>
                 <div className='dialog-header'>
                     <Text text={props.tittle} />
                 </div>

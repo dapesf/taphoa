@@ -1,13 +1,13 @@
-import { useRef, useEffect } from "react"
+import { useRef } from "react"
 import { Text, Input, ButtonConfirm } from "../../component/UIComponents"
 import { useNavigate } from "react-router-dom"
-import { httpGet, httpPost } from "../../services/httpClient"
+import { httpPost } from "../../services/httpClient"
 import { useLoading } from "../../hooks/LoadingContext"
 import { DialogInfo } from "../dialogs/DialogInfo.js"
 import { useDialog } from "../../hooks/DialogContext.js"
-import { Validator } from "../../common/validator.js";
+import { Validator } from "../../common/validator.js"
+import { DialogChgPw } from "../dialogs/DialogChgPw.js"
 import "./Login.css"
-
 
 export function LoginPage() {
     let validator;
@@ -21,16 +21,12 @@ export function LoginPage() {
         {
             methods: {
                 isNumeric: true,
-                isNull: true,
-                isTest: () => {
-                    return true
-                }
+                isNull: true
             }
             , name: "Số điện thoại"
             , messages: {
                 isNumeric: "Chỉ nhập số.",
-                isNull: "Xin hãy nhập.",
-                isTest: "is test"
+                isNull: "Xin hãy nhập."
             }
         },
         password:
@@ -52,10 +48,9 @@ export function LoginPage() {
     }
 
     const Login = async (e) => {
-
         e.preventDefault();
         settingLoading(true)
-
+        createValidator();
         var form = {
             cd_phone_number: userRef.current.value,
             password: passWordRef.current.value
@@ -63,11 +58,7 @@ export function LoginPage() {
 
         const valid = await validator.Excute();
         if (!valid) {
-            return Promise.reject("validate fail")
-                .catch(() => {
-                    settingDialog(<DialogInfo content={validator.msgErrors} tittle={'Alert!'} closeDialog={closeDialog} />);
-                    openDialog();
-                })
+            return Promise.resolve()
                 .finally(() => {
                     settingLoading(false);
                 })
@@ -76,28 +67,27 @@ export function LoginPage() {
             .then((res) => {
                 localStorage.setItem('token', res.data.token);
                 navigate('/HomePage');
-            })
-            .catch((err) => {
-                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
+            }).catch((err) => {
+                settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);
                 openDialog();
             }).finally(() => {
                 settingLoading(false);
             })
     }
 
-    const ForgotPw = async(e) => {
+    const ForgotPw = async (e) => {
         e.preventDefault();
+        settingLoading(true)
+        createValidator();
 
-        return httpGet("Authentication/ForgotPw", {email: "dmtest8899@gmail.com"})
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                settingDialog(<DialogInfo content={[err.response.data.status]} tittle={'Alert!'} closeDialog={closeDialog} />);
-                openDialog();
-            }).finally(() => {
-                settingLoading(false);
-            })
+        const valid = await validator.FilterElement("password").Excute();
+        settingLoading(false)
+        if (!valid) {
+            return Promise.resolve();
+        }
+
+        settingDialog(<DialogChgPw closeDialog={closeDialog} data={{ phone: userRef.current.value }} />);
+        openDialog();
     }
 
     const createValidator = () => {
@@ -105,11 +95,6 @@ export function LoginPage() {
         validations.password.element = passWordRef.current;
         validator = new Validator(validations, { phone: userRef, password: passWordRef });
     };
-
-    useEffect(() => {
-        createValidator();
-        return () => { }
-    })
 
     return (
         <>
