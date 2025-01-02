@@ -16,6 +16,17 @@ const validation =
 
             return true;
         }
+    , maxLength:
+        async (prop, value) => {
+            //await sleep(200);
+            if (value === "" || value === undefined || value === null)
+                return true;
+
+            if(value.length > prop)
+                return false;
+
+            return true;
+        }
 }
 
 function sleep(ms) {

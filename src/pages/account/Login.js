@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import { Text, Input, ButtonConfirm } from "../../component/UIComponents"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { httpPost } from "../../services/httpClient"
 import { useLoading } from "../../hooks/LoadingContext"
 import { DialogInfo } from "../dialogs/DialogInfo.js"
@@ -40,12 +40,6 @@ export function LoginPage() {
             }
         }
     };
-
-    const regexNumber = (e) => {
-        if (e.key.match("[0-9]") == null && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "Tab") {
-            e.preventDefault();
-        }
-    }
 
     const Login = async (e) => {
         e.preventDefault();
@@ -90,6 +84,12 @@ export function LoginPage() {
         openDialog();
     }
 
+    const regexNumber = (e) => {
+        if (e.key.match("[0-9]") == null && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "Tab") {
+            e.preventDefault();
+        }
+    }
+
     const createValidator = () => {
         validations.phone.element = userRef.current;
         validations.password.element = passWordRef.current;
@@ -123,7 +123,9 @@ export function LoginPage() {
                             <Text text="Bạn chưa có tài khoản?" />
                         </div>
                         <div className="mb-3">
-                            <a href="#"><Text text="Đăng ký" /></a>
+                            <Link to="/SignUpPage">
+                                <Text text={"Đăng kí"} />
+                            </Link>
                         </div>
                     </div>
                 </div>
