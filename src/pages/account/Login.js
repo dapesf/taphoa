@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import { Text, Input, ButtonConfirm } from "../../component/UIComponents"
+import { isUndefOrStrEmpty } from "../../common/common.js"
 import { useNavigate, Link } from "react-router-dom"
 import { httpPost } from "../../services/httpClient"
 import { useLoading } from "../../hooks/LoadingContext"
@@ -59,7 +60,11 @@ export function LoginPage() {
         }
         return httpPost("Authentication/Login", form)
             .then((res) => {
-                localStorage.setItem('token', res.data.token);
+                var data = res.data;
+                if(!isUndefOrStrEmpty(data.token))
+                    localStorage.setItem('token', data.token);
+                if(!isUndefOrStrEmpty(res.data.phone))
+                    localStorage.setItem('phone', data.phone);
                 navigate('/HomePage');
             }).catch((err) => {
                 settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);

@@ -11,7 +11,9 @@ export default function Input(props) {
     const _keyUpEvent = props.onKeyUp ?? null;
     const _maxLength = props.maxLength ?? null;
     const _ref = props.inputRef ?? null;
-    const _msgAlert = props.msgAlert ?? "asd";
+    const _msgAlert = props.msgAlert ?? null;
+    const _prop = props.dataProp ?? null;
+    
 
     return (
         <div className="input-container">
@@ -26,6 +28,7 @@ export default function Input(props) {
                 maxLength={_maxLength}
                 onKeyDown={_keyDownEvent}
                 onKeyUp={_keyUpEvent}
+                data-prop={_prop}
                 data-rule="required"
                 onChange={_changeEvent}>
             </input>

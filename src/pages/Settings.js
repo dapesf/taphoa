@@ -23,6 +23,10 @@ export function Settings() {
         <>
             <div className='setting-container'>
                 <div className='setting-content'>
+                    <Link to="/EditAccount">
+                        <Text text={"Sửa tài khoản"} style={'setting-action'}/>
+                    </Link>
+                    <hr></hr>
                     <Link to="/ChangePassword">
                         <Text text={"Đổi mật khẩu"} style={'setting-action'} />
                     </Link>

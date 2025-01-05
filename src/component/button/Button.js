@@ -12,11 +12,13 @@ export function ButtonConfirm(props) {
     const _isDisable = props.isDisable ?? null;
     const _onclick = props.onClick ?? null;
     const _icon = props.children ?? null;
+    const _ref = props.elementRef ?? null;
 
     return (
         <button
         className={_className}
         disabled={_isDisable}
+        ref={_ref}
         onClick={_onclick}>
             {_icon ? _icon :_text }
     </button>

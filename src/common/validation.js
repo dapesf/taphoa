@@ -1,7 +1,9 @@
+import { isUndefOrStrEmpty } from "./common";
+
 const validation =
 {
     isNumeric:
-        async (prop, value) => {
+        async function (prop, value) {
             //await sleep(200);
             if (isNaN(value))
                 return false;
@@ -9,20 +11,33 @@ const validation =
             return true;
         }
     , isNull:
-        async (prop, value) => {
+        async function (prop, value) {
             //await sleep(200);
-            if (value === "" || value === undefined || value === null)
+            if (isUndefOrStrEmpty(value))
                 return false;
 
             return true;
         }
     , maxLength:
-        async (prop, value) => {
+        async function (prop, value) {
             //await sleep(200);
-            if (value === "" || value === undefined || value === null)
+            if (isUndefOrStrEmpty(value))
                 return true;
 
-            if(value.length > prop)
+            if (value.length > prop)
+                return false;
+
+            return true;
+        }
+    , isMail:
+        async function (prop, value) {
+            //await sleep(200);
+            if (isUndefOrStrEmpty(value))
+                return true;
+
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            if (!emailPattern.test(value))
                 return false;
 
             return true;

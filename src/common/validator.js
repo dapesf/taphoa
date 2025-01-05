@@ -59,7 +59,11 @@ class Validator {
 
         switch (typeof (method)) {
             case 'boolean':
+            case 'number':
                 methods = validation[key];
+                Object.defineProperty(methods, "prop", {
+                    value: method
+                });
                 break;
             case 'function':
                 methods = method;
@@ -77,7 +81,10 @@ class Validator {
             if (typeof (method) != "function") {
                 return await Promise.resolve(true);
             }
-            return await Promise.resolve(method(null, val))
+            
+            let prop = isUndefOrStrEmpty(method.prop) ? null : method.prop;
+
+            return await Promise.resolve(method(prop, val))
                 .then((res) => {
                     return {
                         taskId: taskId,

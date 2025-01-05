@@ -7,6 +7,7 @@ import { Settings } from './Settings.js';
 import { Announce } from './Announce.js';
 import { ChangePassword } from './ChangePassword.js';
 import { ChangePhone } from './ChangePhone.js';
+import { EditAccount } from './EditAccount.js';
 
 export function Page() {
 
@@ -30,6 +31,9 @@ export function Page() {
                 </Routes>
                 <Routes>
                     <Route path="/ChangePhone" element={<ChangePhone />} />
+                </Routes>
+                <Routes>
+                    <Route path="/EditAccount" element={<EditAccount />} />
                 </Routes>
             </div>
         </>
