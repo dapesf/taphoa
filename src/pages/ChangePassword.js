@@ -6,6 +6,7 @@ import { useLoading } from '../hooks/LoadingContext';
 import { DialogInfo } from './dialogs/DialogInfo';
 import { useDialog } from '../hooks/DialogContext';
 import { Validator } from '../common/validator.js';
+import { FormCollection } from '../common/common.js';
 import "./css/ChangePassword.css"
 
 export function ChangePassword() {
@@ -13,6 +14,7 @@ export function ChangePassword() {
     const odPwRef = useRef(null);
     const nwPwRef = useRef(null);
     const cfPwRef = useRef(null);
+    const formRef = useRef(null);
     const { settingDialog, openDialog, closeDialog } = useDialog()
     const { settingLoading } = useLoading();
     const navigate = useNavigate();
@@ -22,7 +24,7 @@ export function ChangePassword() {
             methods: {
                 isNull: true,
             }
-            , name: "Mật khẩu mới"
+            , name: "Mật khẩu cũ"
             , messages: {
                 isNull: "Xin hãy nhập."
             }
@@ -42,10 +44,10 @@ export function ChangePassword() {
             methods: {
                 isNull: true,
                 isCorrtect: () => {
-                    const cfPwRef = cfPwRef.current.value,
-                    nwPw = nwPwRef.current.value;
+                    const cfPw = cfPwRef.current.value,
+                        nwPw = nwPwRef.current.value;
 
-                    return (!(cfPwRef !== nwPw))
+                    return (!(cfPw !== nwPw))
                 }
             }
             , name: "Nhập mật khẩu mới"
@@ -57,18 +59,11 @@ export function ChangePassword() {
     };
 
     const cmdChangePass = async (e) => {
-
-        e.preventDefault();
         settingLoading(true)
-
-        var form = {
-            oldPw: odPwRef.current.value,
-            newPw: nwPwRef.current.value
-        }
 
         const valid = await validator.Excute();
         if (!valid) {
-            return Promise.reject("validate fail")
+            return Promise.resolve("validate fail")
                 .catch(() => {
                     settingDialog(<DialogInfo content={validator.msgErrors} type={'alert'} closeDialog={closeDialog} />);
                     openDialog();
@@ -77,9 +72,10 @@ export function ChangePassword() {
                     settingLoading(false);
                 })
         }
-        return httpPost("Authentication/ChangePassword", form)
+        return httpPost("Authentication/ChangePassword", FormCollection(formRef.current))
             .then((res) => {
                 localStorage.removeItem('token')
+                localStorage.removeItem('phone')
                 settingLoading(false);
                 navigate("/Login")
             })
@@ -105,21 +101,23 @@ export function ChangePassword() {
 
     return (
         <>
-            <div className='chg-pw-list-content'>
-                <div>
-                    <Input type="password" inputRef={odPwRef} placeholder="Mật khẩu cũ" />
-                </div>
-                <div>
-                    <Input type="password" inputRef={nwPwRef} placeholder="Mật khẩu mới" />
-                </div>
-                <div>
-                    <Input type="password" inputRef={cfPwRef} placeholder="Nhập mật khẩu mới" />
-                </div>
-                <div>
-                    <ButtonConfirm text={'OK'} onClick={cmdChangePass}></ButtonConfirm>
+            <div className="card">
+                <h4 className="headForm">Chỉnh sửa tài khoản</h4>
+                <div ref={formRef} className="card-body">
+                    <div className="mb-3">
+                        <Input type="password" elementRef={odPwRef} dataProp={"oldPw"} className="form-control" placeholder="Mật khẩu cũ" />
+                    </div>
+                    <div className="mb-3">
+                        <Input type="password" elementRef={nwPwRef} dataProp={"newPw"} className="form-control" placeholder="Mật khẩu mới" />
+                    </div>
+                    <div className="mb-3">
+                        <Input type="password" elementRef={cfPwRef} className="form-control" placeholder="Nhập mật khẩu mới" />
+                    </div>
+                    <div className="btnLogin">
+                        <ButtonConfirm text={'Xác nhận'} onClick={cmdChangePass} className="btn btn-confirm"></ButtonConfirm>
+                    </div>
                 </div>
             </div>
-
         </>
     )
 }

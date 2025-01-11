@@ -19,8 +19,6 @@
     background-position: center;
 }
 
-
-
 .icon-sort {
     float: left;
     background-image: url('../../assets/sort.jpg');
@@ -29,4 +27,9 @@
 .icon-filter {
     float: right;
     background-image: url('../../assets/filter.jpg');
+}
+
+.icon-more {
+    float: center;
+    background-image: url('../../assets/more.jpg');
 }

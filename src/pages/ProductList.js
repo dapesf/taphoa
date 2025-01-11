@@ -3,6 +3,7 @@ import { Text, Card, Section, ButtonConfirm } from '../component/UIComponents';
 import { useDialog } from '../hooks/DialogContext.js';
 import { DialogSort } from './dialogs/DialogSort.js';
 import { DialogFilter } from './dialogs/DialogFilter.js';
+import { DialogProductInput } from './dialogs/DialogProductInput.js';
 import "./css/ProductList.css"
 
 export function ProductList() {
@@ -18,6 +19,11 @@ export function ProductList() {
         openDialog();
     }
 
+    function openDialogProductInput() {
+        settingDialog(<DialogProductInput closeDialog={closeDialog} />);
+        openDialog();
+    }
+
     return (
         <>
             <div className='product-list-header'>
@@ -25,7 +31,7 @@ export function ProductList() {
                     <Text style='icon icon-sort' onClick={openDialogSort} />
                 </div>
                 <div className='product-type'>
-
+                <Text style='icon icon-more' onClick={openDialogProductInput} />
                 </div>
                 <div>
                     <Text style='icon icon-filter' onClick={openDialogFilter} />

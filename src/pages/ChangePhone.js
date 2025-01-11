@@ -12,6 +12,7 @@ export function ChangePhone() {
     let validator;
     const nwPhoneRef = useRef(null);
     const pwRef = useRef(null);
+    const formRef = useRef(null);
     const { settingDialog, openDialog, closeDialog } = useDialog()
     const { settingLoading } = useLoading();
     const navigate = useNavigate();
@@ -62,6 +63,7 @@ export function ChangePhone() {
         return httpPost("Authentication/ChangePhone", form)
             .then((res) => {
                 localStorage.removeItem('token')
+                localStorage.removeItem('phone')
                 settingLoading(false);
                 navigate("/Login")
             })
@@ -86,17 +88,21 @@ export function ChangePhone() {
 
     return (
         <>
-            <div className='chg-pw-list-content'>
-                <div>
-                    <Input type="number" inputRef={nwPhoneRef} placeholder="Số điện thoại mới" />
-                </div>
-                <div>
-                    <Input type="password" inputRef={pwRef} placeholder="Mật khẩu" />
-                </div>
-                <div>
-                    <ButtonConfirm text={'OK'} onClick={cmdChangePhone}></ButtonConfirm>
+            <div className="card">
+                <div ref={formRef} className="card-body">
+                    <div className="mb-3">
+                        <Input type="number" elementRef={nwPhoneRef} dataProp={"nwPhone"} className="form-control" placeholder="Số điện thoại mới" />
+                    </div>
+                    <div className="mb-3">
+                        <Input type="password" elementRef={pwRef} dataProp={"password"} className="form-control" placeholder="Mật khẩu" />
+                    </div>
+                    <div className="btnLogin">
+                        <ButtonConfirm text={'Xác nhận'} onClick={cmdChangePhone} className="btn btn-confirm"></ButtonConfirm>
+                    </div>
                 </div>
             </div>
+
+
 
         </>
     )

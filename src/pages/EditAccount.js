@@ -1,15 +1,16 @@
 import { useEffect, useRef } from "react"
-import { Input, ButtonConfirm } from "../component/UIComponents.js"
+import { Text, Input, ButtonConfirm } from "../component/UIComponents.js"
 import { Link } from "react-router-dom"
 import { httpGet, httpPost } from "../services/httpClient.js"
 import { useLoading } from "../hooks/LoadingContext.js"
 import { DialogInfo } from "./dialogs/DialogInfo.js"
 import { useDialog } from "../hooks/DialogContext.js"
 import { Validator } from "../common/validator.js"
-import { isUndefOrStrEmpty } from "../common/common.js"
+import { isUndefOrStrEmpty, DataBinding, FormCollection } from "../common/common.js"
 
 export function EditAccount() {
     let validator;
+    const phoneRef = useRef(null);
     const nameRef = useRef(null);
     const storeRef = useRef(null);
     const mailRef = useRef(null);
@@ -22,22 +23,15 @@ export function EditAccount() {
         settingLoading(true)
         createValidator();
 
-        var form = {
-            cd_phone_number: "9999",
-            cd_store: storeRef.current.value,
-            name: nameRef.current.value,
-            Email: mailRef.current.value,
-        }
-
         const valid = await validator.Excute();
         if (!valid) {
             return Promise.resolve()
                 .finally(() => {
                     settingLoading(false);
-            })
+                })
         }
 
-        return httpPost("Authentication/PostUser", form)
+        return httpPost("Authentication/PostUser", FormCollection(formRef.current))
             .then((res) => {
                 settingDialog(<DialogInfo content={[res.data.messageRtr]} type={'info'} closeDialog={closeDialog} />);
                 openDialog();
@@ -52,27 +46,16 @@ export function EditAccount() {
     const SearchUser = async () => {
         settingLoading(true)
 
-        var url = "Authentication/GetSearchUser?phone=" + "9999"
+        var url = "Authentication/GetSearchUser?phone=" + localStorage.getItem("phone")
         return httpGet(url)
             .then((res) => {
-                Binding(res.data.data);
+                DataBinding(res.data.dataRtn, formRef.current);
             }).catch((err) => {
                 settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);
                 openDialog();
             }).finally(() => {
                 settingLoading(false);
             })
-    }
-
-    const Binding = async (data) => {
-        var fRef = formRef.current;
-        var inputs = fRef.querySelectorAll('input');
-        inputs.forEach((input, index) => {
-            if(isUndefOrStrEmpty(input.dataset.prop))
-                return true;
-
-            input.value = data[input.dataset.prop];
-        });
     }
 
     let validations = {
@@ -121,12 +104,6 @@ export function EditAccount() {
         });
     };
 
-    const regexNumber = (e) => {
-        if (e.key.match("[0-9]") == null && e.key !== "Backspace" && e.key !== "Delete" && e.key !== "Tab") {
-            e.preventDefault();
-        }
-    }
-
     useEffect(() => {
         SearchUser();
         return () => {
@@ -142,13 +119,17 @@ export function EditAccount() {
                     <div className="card-body">
                         <form ref={formRef}>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={nameRef} dataProp={"name"} placeholder="Tên" className="form-control" />
+                                <Text text={"Phone: "} />
+                                <Text elementRef={phoneRef} dataProp={"cd_phone_number"} />
                             </div>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={storeRef} dataProp={"cd_store"} placeholder="Cửa hàng" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={nameRef} dataProp={"name"} placeholder="Tên" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="tel" inputRef={mailRef} dataProp={"email"} placeholder="Email" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={storeRef} dataProp={"cd_store"} placeholder="Cửa hàng" className="form-control" />
+                            </div>
+                            <div className="mb-3">
+                                <Input type="tel" elementRef={mailRef} dataProp={"email"} placeholder="Email" className="form-control" />
                             </div>
                             <div className="btnLogin">
                                 <ButtonConfirm onClick={Register} className="btn btn-confirm" text="Xác nhận" />

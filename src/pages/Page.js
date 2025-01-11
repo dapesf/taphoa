@@ -8,6 +8,7 @@ import { Announce } from './Announce.js';
 import { ChangePassword } from './ChangePassword.js';
 import { ChangePhone } from './ChangePhone.js';
 import { EditAccount } from './EditAccount.js';
+import { ProductInput } from './ProductInput.js';
 
 export function Page() {
 
@@ -34,6 +35,9 @@ export function Page() {
                 </Routes>
                 <Routes>
                     <Route path="/EditAccount" element={<EditAccount />} />
+                </Routes>
+                <Routes>
+                    <Route path="/ProductInput" element={<ProductInput />} />
                 </Routes>
             </div>
         </>

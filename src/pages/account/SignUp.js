@@ -144,19 +144,19 @@ export function SignUpPage() {
                     <div className="card-body">
                         <form>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={phoneRef} onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={phoneRef} onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={nameRef} placeholder="Tên" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={nameRef} placeholder="Tên" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={storeRef} placeholder="Cửa hàng" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={storeRef} placeholder="Cửa hàng" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="text" id="txtPassword" inputRef={pwRef} placeholder="Mật khẩu" className="form-control" />
+                                <Input type="text" id="txtPassword" elementRef={pwRef} placeholder="Mật khẩu" className="form-control" />
                             </div>
                             <div className="mb-3">
-                                <Input type="tel" inputRef={mailRef} placeholder="Email" className="form-control" />
+                                <Input type="tel" elementRef={mailRef} placeholder="Email" className="form-control" />
                             </div>
                             <div className="btnLogin">
                                 <ButtonConfirm onClick={Register} elementRef={btnRef} className="btn btn-confirm" text="Đăng ký" />

@@ -60,10 +60,10 @@ export function LoginPage() {
         }
         return httpPost("Authentication/Login", form)
             .then((res) => {
-                var data = res.data;
+                var data = res.data.dataRtn;
                 if(!isUndefOrStrEmpty(data.token))
                     localStorage.setItem('token', data.token);
-                if(!isUndefOrStrEmpty(res.data.phone))
+                if(!isUndefOrStrEmpty(data.phone))
                     localStorage.setItem('phone', data.phone);
                 navigate('/HomePage');
             }).catch((err) => {
@@ -109,10 +109,10 @@ export function LoginPage() {
                     <div className="card-body">
                         <form>
                             <div className="mb-3">
-                                <Input type="tel" maxLength="10" inputRef={userRef} onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" />
+                                <Input type="tel" maxLength="10" elementRef={userRef} onKeyDown={regexNumber} placeholder="Số điện thoại" className="form-control" ></Input>
                             </div>
                             <div className="mb-3">
-                                <Input type="text" id="txtPassword" inputRef={passWordRef} placeholder="Mật khẩu" className="form-control" />
+                                <Input type="text" id="txtPassword" elementRef={passWordRef} placeholder="Mật khẩu" className="form-control" />
                             </div>
                             <div className="mb-3" style={{ textAlign: "right" }}>
                                 <a href="#" className="forgotPw" onClick={ForgotPw}><Text text="Quên mật khẩu" /></a>

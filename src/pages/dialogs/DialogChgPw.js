@@ -97,11 +97,11 @@ export function DialogChgPw(props) {
                 <div className='dialog-content'>
                     <div className='dlg-sort-by'>
                         <Text text={'Mật khẩu mới'} /> <br></br>
-                        <Input type={'password'} inputRef={pwRef} />
+                        <Input type={'password'} elementRef={pwRef} />
                     </div>
                     <div className='dlg-sort-by'>
                         <Text text={'Xác nhận mật khẩu mới'} /><br></br>
-                        <Input type={'password'} inputRef={pwCfRef} />
+                        <Input type={'password'} elementRef={pwCfRef} />
                     </div>
                 </div>
                 <div className='dialog-footer'>

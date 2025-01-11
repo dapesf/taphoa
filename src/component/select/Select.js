@@ -2,7 +2,7 @@ export default function Select(props) {
     const _className = props.className ?? null;
     const _id = props.id ?? null;
     const _changeEvent = props.onChange ?? null;
-    const _ref = props.inputRef ?? null;
+    const _ref = props.elementRef ?? null;
     const _option = props.option ?? [];
 
     return (
