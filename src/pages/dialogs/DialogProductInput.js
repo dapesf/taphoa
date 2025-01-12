@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Text, Input, ButtonConfirm, Select } from '../../component/UIComponents';
 import { httpGet, httpPost } from "../../services/httpClient.js";
 import { useLoading } from "../../hooks/LoadingContext.js";
 import { DialogInfo } from "./DialogInfo.js";
 import { useDialog } from "../../hooks/DialogContext.js";
 import { Validator } from "../../common/validator.js";
+import { OriginService, UnitService } from "../../services/dataLiteral.js";
 import { DataBinding, FormCollection } from "../../common/common.js"
 
 export function DialogProductInput(props) {
@@ -21,6 +22,10 @@ export function DialogProductInput(props) {
     const ctRef = useRef(null);
 
     const formRef = useRef(null);
+
+    const [origin, setOrigin] = useState([]);
+    const [unit, setUnit] = useState([]);
+
     const { settingDialog, openDialog, closeDialog } = useDialog()
     const { settingLoading } = useLoading();
 
@@ -51,17 +56,10 @@ export function DialogProductInput(props) {
 
     const SearchUser = async () => {
         settingLoading(true)
-
-        var url = "Authentication/GetSearchUser?phone=" + localStorage.getItem("phone")
-        return httpGet(url)
-            .then((res) => {
-                DataBinding(res.data.dataRtn, formRef.current);
-            }).catch((err) => {
-                settingDialog(<DialogInfo content={[err.response.data.messageRtr]} type={'alert'} closeDialog={closeDialog} />);
-                openDialog();
-            }).finally(() => {
-                settingLoading(false);
-            })
+         var res = await Promise.all([OriginService(), UnitService()])
+        setOrigin(res[0].data);
+        setUnit(res[1].data);
+        settingLoading(false);
     }
 
     let validations = {
@@ -89,7 +87,7 @@ export function DialogProductInput(props) {
     }
 
     useEffect(() => {
-        //SearchUser();
+        SearchUser();
         return () => {
 
         }
@@ -98,42 +96,42 @@ export function DialogProductInput(props) {
     return (
         <>
             <div className='dialog-container'>
-                <div className='dialog-modal'>
+                <div className='dialog-product-modal'>
                     <div className='dialog-header'>
                         <Text text="Thêm hàng hóa"></Text>
                     </div>
                     <div className='dialog-content'>
                         <div className="card">
                             <div ref={formRef} className="card-body">
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" maxLength="10" elementRef={productRef} dataProp={"cd_product"} placeholder="Mã sản phẩm" className="form-control" />
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" elementRef={nmPrRef} dataProp={"nm_product"} placeholder="Tên sản phẩm" className="form-control" />
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" elementRef={nmPrENRef} dataProp={"nm_product_en"} placeholder="Tên sản phẩm tiếng anh" className="form-control" />
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" maxLength="10" elementRef={storeRef} dataProp={"cd_store"} placeholder="Mã cửa hàng" className="form-control" />
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" maxLength="10" elementRef={dateStRef} dataProp={"dt_start"} placeholder="Ngày giao kế hoạch" className="form-control" />
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-1">
                                     <Input type="tel" maxLength="10" elementRef={dateEdRef} dataProp={"dt_end"} placeholder="Ngày nhập thực tế" className="form-control" />
                                 </div>
-                                <div className="mb-3">
-                                    <Input type="tel" maxLength="10" elementRef={kinRef} dataProp={"kin_price"} placeholder="Đơn giá" className="form-control" />
+                                <div className="mb-1">
+                                    <Input type="tel" maxLength="10" elementRef={kinRef} dataProp={"kin_price"} onKeyDown={regexNumber} placeholder="Đơn giá" className="form-control" />
                                 </div>
-                                <div className="mb-3">
-                                    <Input type="tel" maxLength="10" elementRef={typeRef} dataProp={"type_unit"} placeholder="Loại" className="form-control" />
+                                <div className="mb-1">
+                                    <Select option={unit} isBlank={true} keyOption={"kbn1"} valOption={"nm1"} elementRef={typeRef} dataProp={"type_unit"} placeholder="Loại" className="form-control" />
                                 </div>
-                                <div className="mb-3">
-                                    <Input type="tel" maxLength="10" elementRef={qtRef} dataProp={"qnt_in"} placeholder="Số lượng" className="form-control" />
+                                <div className="mb-1">
+                                    <Input type="tel" maxLength="10" elementRef={qtRef} dataProp={"qnt_in"} onKeyDown={regexNumber} placeholder="Số lượng" className="form-control" />
                                 </div>
-                                <div className="mb-3">
-                                    <Select elementRef={ctRef} dataProp={"cd_country"} placeholder="Xuất xứ" className="form-control" />
+                                <div className="mb-1">
+                                    <Select option={origin} isBlank={true} keyOption={"kbn1"} valOption={"nm1"} elementRef={ctRef} dataProp={"cd_country"} placeholder="Xuất xứ" className="form-control" />
                                 </div>
                                 <div className="btnLogin">
                                     

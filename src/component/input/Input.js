@@ -17,11 +17,12 @@ export default function Input(props) {
 
     return (
         <div className="input-container">
+            <span>{_placeholder}</span>
             <input
                 type={_type}
                 className={_className}
                 id={_id}
-                placeholder={_placeholder}
+                // placeholder={_placeholder}
                 name={_name}
                 value={props.value}
                 ref={_ref}

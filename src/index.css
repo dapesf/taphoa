@@ -28,3 +28,7 @@ body::-webkit-scrollbar {
 .has-error{
   border-color: #e39797;
 }
+
+.form-control {
+  padding: 0px !important;
+}

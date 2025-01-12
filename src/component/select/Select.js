@@ -3,19 +3,30 @@ export default function Select(props) {
     const _id = props.id ?? null;
     const _changeEvent = props.onChange ?? null;
     const _ref = props.elementRef ?? null;
-    const _option = props.option ?? [];
+    const _placeholder = props.placeholder ?? null;
+    const _blankAble = props.isBlank ?? false;
+    const _keyOption = props.keyOption ?? null;
+    const _valOption = props.valOption ?? null;
+    let _option = props.option ?? [];
+
+    if (_blankAble) {
+        _option.unshift({ [_keyOption]: "", [_valOption]: "" });
+    }
 
     return (
-        <select
-            className={_className}
-            id={_id}
-            ref={_ref}
-            onChange={_changeEvent}>
-            {
-                _option.map((item, id) => {
-                    return <option key={id} value={id}>{item}</option>
-                })
-            }
-        </select>
+        <div>
+            <span>{_placeholder}</span>
+            <select
+                className={_className}
+                id={_id}
+                ref={_ref}
+                onChange={_changeEvent}>
+                {
+                    _option.map((item, id) => {
+                        return <option key={id} value={item[_keyOption]}>{item[_valOption]}</option>
+                    })
+                }
+            </select>
+        </div >
     )
 }
