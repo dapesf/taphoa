@@ -2,18 +2,20 @@ import './Section.css';
 import { Text } from '../UIComponents';
 
 export default function Section(props) {
-    let name = props.name;
-    let quantity = props.quantity;
-    let unit = props.unit;
+    const _name = props.name;
+    const _quantity = props.quantity;
+    const _unit = props.unit;
+    const _key = props.keyItem;
 
     return (
-        <div className="section-container">
+        <div key={_key} className="section-container">
             <div className='section-name'>
-                <Text text={name} />
+                <Text text={_name} />
             </div>
             <div className='section-prince'>
-                <Text text={quantity} />/
-                <Text text={unit} />
+                <Text text={_quantity} />
+                {_unit ? "/" : ""}
+                <Text text={_unit} />
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ export default function Select(props) {
     const _ref = props.elementRef ?? null;
     const _placeholder = props.placeholder ?? null;
     const _blankAble = props.isBlank ?? false;
+    const _dataProp = props.dataProp ?? null;
     const _keyOption = props.keyOption ?? null;
     const _valOption = props.valOption ?? null;
     let _option = props.option ?? [];
@@ -20,6 +21,7 @@ export default function Select(props) {
                 className={_className}
                 id={_id}
                 ref={_ref}
+                data-prop={_dataProp}
                 onChange={_changeEvent}>
                 {
                     _option.map((item, id) => {

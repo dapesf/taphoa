@@ -6,7 +6,7 @@ import { DialogInfo } from "./DialogInfo.js";
 import { useDialog } from "../../hooks/DialogContext.js";
 import { Validator } from "../../common/validator.js";
 import { OriginService, UnitService } from "../../services/dataLiteral.js";
-import { DataBinding, FormCollection } from "../../common/common.js"
+import { FormCollection } from "../../common/common.js"
 
 export function DialogProductInput(props) {
     let validator;
@@ -32,17 +32,17 @@ export function DialogProductInput(props) {
     const Register = async (e) => {
         e.preventDefault();
         settingLoading(true)
-        createValidator();
+        // createValidator();
 
-        const valid = await validator.Excute();
-        if (!valid) {
-            return Promise.resolve()
-                .finally(() => {
-                    settingLoading(false);
-                })
-        }
+        // const valid = await validator.Excute();
+        // if (!valid) {
+        //     return Promise.resolve()
+        //         .finally(() => {
+        //             settingLoading(false);
+        //         })
+        // }
 
-        return httpPost("Authentication/PostUser", FormCollection(formRef.current))
+        return httpPost("Product/PostProduct", FormCollection(formRef.current))
             .then((res) => {
                 settingDialog(<DialogInfo content={[res.data.messageRtr]} type={'info'} closeDialog={closeDialog} />);
                 openDialog();
@@ -54,12 +54,19 @@ export function DialogProductInput(props) {
             })
     }
 
-    const SearchUser = async () => {
+    const LoadMaster = async () => {
         settingLoading(true)
-         var res = await Promise.all([OriginService(), UnitService()])
-        setOrigin(res[0].data);
-        setUnit(res[1].data);
-        settingLoading(false);
+        var [origin, unit] = await Promise.all([OriginService(), UnitService()])
+            .catch((err) => {
+                settingLoading(false)
+            })
+
+        if (origin)
+            setOrigin(origin.data);
+        if (unit)
+            setUnit(unit.data);
+
+        settingLoading(false)
     }
 
     let validations = {
@@ -87,7 +94,7 @@ export function DialogProductInput(props) {
     }
 
     useEffect(() => {
-        SearchUser();
+        LoadMaster();
         return () => {
 
         }
@@ -134,17 +141,17 @@ export function DialogProductInput(props) {
                                     <Select option={origin} isBlank={true} keyOption={"kbn1"} valOption={"nm1"} elementRef={ctRef} dataProp={"cd_country"} placeholder="Xuất xứ" className="form-control" />
                                 </div>
                                 <div className="btnLogin">
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className='dialog-footer'>
                         <div className='dialog-footer-left'>
-                        <ButtonConfirm onClick={Register} className="btn btn-confirm" text="Xong" />
+                            <ButtonConfirm onClick={Register} className="btn btn-confirm" text="Xong" />
                         </div>
                         <div className='dialog-footer-right'>
-                            <ButtonConfirm onClick={props.closeDialog} className="btn btn-dark" text='Tắt'/>
+                            <ButtonConfirm onClick={props.closeDialog} className="btn btn-dark" text='Tắt' />
                         </div>
                     </div>
                 </div>

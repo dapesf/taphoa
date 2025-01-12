@@ -33,6 +33,7 @@ const FormCollection = (form) => {
 
         switch (element.tagName) {
             case "INPUT":
+            case "SELECT":
                 dataRtn[element.dataset.prop] = element.value;
                 break;
             default:
